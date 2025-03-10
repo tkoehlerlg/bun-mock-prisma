@@ -3,6 +3,11 @@
   "workspaces": {
     "": {
       "name": "bun-mock-prisma",
+      "dependencies": {
+        "bun-types": "^1.2.4",
+        "typescript": "^5.8.2",
+        "undici-types": "^6.20.0",
+      },
       "devDependencies": {
         "@types/bun": "latest",
       },
