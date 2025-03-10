@@ -16,6 +16,7 @@ export type PrismaClientMock<PrismaClient extends object> = {
     _reset: () => void
 }
 
+// Create a mock for the Prisma client
 export function createPrismaMock<
     PrismaClient extends object
 >(): PrismaClientMock<PrismaClient> {
@@ -52,10 +53,7 @@ export function createPrismaMock<
             }
 
             if (prop === '_reset') {
-                return () => {
-                    mockCache.clear()
-                    transactionCache.clear()
-                }
+                return () => resetMockCalls(mockCache, transactionCache)
             }
 
             if (!storage.has(prop)) {
@@ -71,3 +69,83 @@ export function createPrismaMock<
 
 // Singleton instance
 export const prismaMock = createPrismaMock<any>()
+
+// Helper function to reset all mock calls - placed at bottom of file
+function resetMockCalls(
+    mockCache: Map<string, Mock<any>>,
+    transactionCache: Map<string, Mock<any>>
+) {
+    // Reset all mock functions that may be in the mockCache
+    mockCache.forEach((value) => {
+        // Handle direct mock functions
+        if (typeof value === 'function' && value.mock) {
+            value.mock.calls = []
+        }
+
+        // Try to access model methods if this is a model proxy
+        if (value && typeof value === 'object') {
+            // Look for known methods like findMany, findUnique, create, etc.
+            const commonMethods = [
+                'findMany',
+                'findUnique',
+                'findFirst',
+                'create',
+                'update',
+                'upsert',
+                'delete',
+                'deleteMany',
+                'updateMany',
+                'count',
+            ]
+
+            // Try accessing these common methods on the model object
+            commonMethods.forEach((methodName) => {
+                try {
+                    const method = (value as any)[methodName]
+                    if (method && typeof method === 'function' && method.mock) {
+                        method.mock.calls = []
+                    }
+                } catch (e) {
+                    // Ignore errors from proxy handler
+                }
+            })
+        }
+    })
+
+    // Do the same for transaction cache
+    transactionCache.forEach((value) => {
+        if (typeof value === 'function' && value.mock) {
+            value.mock.calls = []
+        }
+
+        if (value && typeof value === 'object') {
+            const commonMethods = [
+                'findMany',
+                'findUnique',
+                'findFirst',
+                'create',
+                'update',
+                'upsert',
+                'delete',
+                'deleteMany',
+                'updateMany',
+                'count',
+            ]
+
+            commonMethods.forEach((methodName) => {
+                try {
+                    const method = (value as any)[methodName]
+                    if (method && typeof method === 'function' && method.mock) {
+                        method.mock.calls = []
+                    }
+                } catch (e) {
+                    // Ignore errors from proxy handler
+                }
+            })
+        }
+    })
+
+    // Clear the caches
+    mockCache.clear()
+    transactionCache.clear()
+}
