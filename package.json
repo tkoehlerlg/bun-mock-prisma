@@ -7,5 +7,31 @@
     },
     "peerDependencies": {
         "typescript": "^5"
-    }
+    },
+    "private": true,
+    "version": "1.0.0",
+    "description": "A Bun extension to simplify Prisma mocking",
+    "main": "index.ts",
+    "dependencies": {
+        "bun-types": "^1.2.4",
+        "typescript": "^5.8.2",
+        "undici-types": "^6.20.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tkoehlerlg/bun-mock-prisma.git"
+    },
+    "keywords": [
+        "bun",
+        "prisma"
+    ],
+    "author": "Torben Köhler",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/tkoehlerlg/bun-mock-prisma/issues"
+    },
+    "homepage": "https://github.com/tkoehlerlg/bun-mock-prisma#readme"
 }
