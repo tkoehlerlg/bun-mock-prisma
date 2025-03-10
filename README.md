@@ -14,6 +14,7 @@ bun add -d bun-mock-prisma
 -   Support for nested models and methods
 -   Support for transactions
 -   Simple reset mechanism for test isolation
+-   No dependencies apart from Bun and TypeScript
 
 ## Usage
 
