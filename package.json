@@ -8,7 +8,7 @@
     "peerDependencies": {
         "typescript": "^5"
     },
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "A Bun extension to simplify Prisma mocking",
     "main": "index.ts",
     "dependencies": {
