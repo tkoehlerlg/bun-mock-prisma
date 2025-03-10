@@ -35,20 +35,19 @@ mock.module('@/utils/prisma', () => ({
     prisma: createPrismaMock<PrismaClient>(),
 }))
 
-beforeEach(() => {
-    prismaMock._reset()
-})
-
 export const prismaMock = prisma as unknown as PrismaClientMock<PrismaClient>
 ```
-
-### Using in Tests
 
 ```typescript
 // user.test.ts
 import { describe, test, expect } from 'bun:test'
 import { prismaMock } from './prisma.singleton'
 import { createUser } from './user.service'
+
+// This needs to be added to every test file to ensure mocks are reset before each test (bun related)
+beforeEach(() => {
+    prismaMock._reset()
+})
 
 describe('User service', () => {
     test('should create a new user', async () => {
