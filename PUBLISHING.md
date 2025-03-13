@@ -51,21 +51,3 @@ This document outlines the steps to publish a package to the Bun registry.
     ```
 
 2. Update any examples or documentation to match the released version
-
-## Local Testing Before Publishing
-
-If you want to test the package locally before publishing:
-
-1. Create a package tarball:
-
-    ```
-    bun pack
-    ```
-
-2. In another project, install the package from the local tarball:
-
-    ```
-    bun add /path/to/<package-name>-1.0.0.tgz
-    ```
-
-3. Test your package functionality in the test project
