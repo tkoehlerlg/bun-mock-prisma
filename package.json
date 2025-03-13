@@ -1,46 +1,49 @@
 {
     "name": "bun-mock-prisma",
-    "version": "1.1.2",
-    "description": "A Bun extension to simplify Prisma mocking",
-    "module": "dist/index.js",
+    "version": "1.2.0",
+    "description": "A simple and type-safe mocking utility for Prisma Client in Bun tests",
     "main": "dist/index.js",
+    "module": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "module",
     "files": [
-        "dist"
+        "dist",
+        "LICENSE",
+        "README.md"
     ],
-    "dependencies": {},
-    "devDependencies": {
-        "@types/bun": "latest",
-        "bun-types": "^1.2.5",
-        "typescript": "^5.8.2"
-    },
-    "peerDependencies": {
-        "@prisma/client": ">=4.0.0",
-        "bun": ">=1.0.0"
-    },
     "scripts": {
-        "build": "tsc && bun build ./index.ts --outdir ./dist --target bun",
-        "test": "bun test",
+        "build": "bun build ./index.ts --outdir ./dist --target bun",
+        "test": "echo 'Running tests in ./demo...' && cd demo && bun run test && cd ..",
+        "typecheck": "bun tsc --noEmit",
         "prepublishOnly": "bun run build"
     },
     "keywords": [
         "bun",
         "prisma",
         "mock",
-        "testing"
+        "test",
+        "typescript"
     ],
-    "author": "Torben Köhler",
+    "author": "",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/tkoehlerlg/bun-mock-prisma.git"
+        "url": "git+https://github.com/your-username/bun-mock-prisma.git"
     },
     "bugs": {
-        "url": "https://github.com/tkoehlerlg/bun-mock-prisma/issues"
+        "url": "https://github.com/your-username/bun-mock-prisma/issues"
     },
-    "homepage": "https://github.com/tkoehlerlg/bun-mock-prisma#readme",
+    "homepage": "https://github.com/your-username/bun-mock-prisma#readme",
     "engines": {
         "bun": ">=1.0.0"
-    }
+    },
+    "peerDependencies": {
+        "bun-types": ">=1.0.0"
+    },
+    "devDependencies": {
+        "bun-types": "latest"
+    },
+    "trustedDependencies": [
+        "bun"
+    ]
 }

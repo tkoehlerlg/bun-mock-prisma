@@ -1,0 +1,21 @@
+{
+    "name": "demo",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.5.0",
+        "prisma": "^6.5.0",
+        "bun-mock-prisma": "file:../"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    },
+    "scripts": {
+        "setup": "bun prisma generate",
+        "test": "bun run setup && bun test"
+    }
+}

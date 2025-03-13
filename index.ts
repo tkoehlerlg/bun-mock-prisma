@@ -1,73 +1,88 @@
 import { mock } from 'bun:test'
 import type { Mock } from 'bun:test'
 
+/**
+ * Recursively transforms a type to create a mock version where all methods
+ * are replaced with Bun Mock objects.
+ */
 type PrismaMethodMock<T> = T extends (...args: any[]) => any
     ? Mock<T>
     : { [K in keyof T]: PrismaMethodMock<T[K]> }
 
+/**
+ * Represents a mocked version of the Prisma Client with all methods
+ * replaced by Mock objects and additional utility methods.
+ */
 export type PrismaClientMock<PrismaClient extends object> = {
     [K in keyof PrismaClient]: PrismaMethodMock<PrismaClient[K]>
 } & {
-    $transaction: Mock<
-        <T>(
-            fn: (tx: PrismaClientMock<PrismaClient>) => Promise<T>
-        ) => Promise<T>
-    >
+    /** Resets all mocks to their initial state */
     _reset: () => void
 }
 
+/**
+ * Creates a mock instance of the Prisma Client that can be used in tests.
+ * All methods are automatically mocked and can be configured with mockResolvedValue, etc.
+ *
+ * @returns A mock Prisma Client instance
+ */
 export function createPrismaMock<
     PrismaClient extends object
 >(): PrismaClientMock<PrismaClient> {
-    const mockCache = new Map<string, Mock<any>>()
-    const transactionCache = new Map<string, Mock<any>>()
+    // Maps to store our mock structures
+    const modelProxies = new Map<string, any>()
+    const operationMocks = new Map<string, Mock<any>>()
 
-    const createModelHandler = (storage: Map<string, Mock<any>>) => ({
-        get: (_target: any, prop: string) => {
-            if (prop === 'then') return undefined // Important for Promise resolution
+    // Create a reset function that properly resets all mocks
+    const resetFunction = () => {
+        // Clear the model proxies to rebuild them if needed
+        modelProxies.clear()
 
-            if (!storage.has(prop)) {
-                storage.set(
-                    prop,
-                    mock(() => null)
-                )
-            }
+        // Reset but don't clear operation mocks to preserve mock functions
+        for (const mockFn of operationMocks.values()) {
+            mockFn.mockReset()
+        }
+    }
 
-            return storage.get(prop)
-        },
-    })
-
-    const createMainHandler = (isTransaction = false) => ({
-        get: (_target: any, prop: string) => {
-            const storage = isTransaction ? transactionCache : mockCache
-
-            if (prop === '$transaction') {
-                return mock(async (fn: any) => {
-                    const txMock = new Proxy(
-                        {},
-                        createMainHandler(true)
-                    ) as PrismaClientMock<PrismaClient>
-                    return fn(txMock)
-                })
-            }
-
+    // Create the Prisma mock client using a Proxy
+    const prismaMockClient = new Proxy({} as any, {
+        get: (_target, prop: string) => {
+            // Handle special properties
             if (prop === '_reset') {
-                return () => {
-                    mockCache.clear()
-                    transactionCache.clear()
-                }
+                return resetFunction
             }
 
-            if (!storage.has(prop)) {
-                storage.set(prop, new Proxy({}, createModelHandler(storage)))
+            // Model access (e.g., user, post)
+            // Create on demand if not exists
+            if (!modelProxies.has(prop)) {
+                // Create a model proxy with its operations
+                const modelProxy = new Proxy({} as any, {
+                    get: (_modelTarget, operation: string) => {
+                        const operationKey = `${String(prop)}.${String(
+                            operation
+                        )}`
+
+                        // Create mock on demand if not exists
+                        if (!operationMocks.has(operationKey)) {
+                            operationMocks.set(
+                                operationKey,
+                                mock(() => null)
+                            )
+                        }
+
+                        return operationMocks.get(operationKey)
+                    },
+                })
+
+                modelProxies.set(prop, modelProxy)
             }
 
-            return storage.get(prop)
+            return modelProxies.get(prop)
         },
-    })
+    }) as PrismaClientMock<PrismaClient>
 
-    return new Proxy({}, createMainHandler()) as PrismaClientMock<PrismaClient>
+    return prismaMockClient
 }
 
-// Singleton instance
+// Export a singleton instance for easy importing in tests
 export const prismaMock = createPrismaMock<any>()

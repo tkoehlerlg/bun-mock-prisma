@@ -1,17 +1,23 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
-        "module": "ESNext",
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "strict": true,
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "outDir": "dist",
-        "skipLibCheck": true,
         "lib": ["ESNext"],
-        "types": ["bun-types"]
+        "module": "ESNext",
+        "target": "ESNext",
+        "moduleResolution": "bundler",
+        "moduleDetection": "force",
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "composite": true,
+        "strict": true,
+        "downlevelIteration": true,
+        "skipLibCheck": true,
+        "jsx": "preserve",
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "declaration": true,
+        "declarationMap": true,
+        "outDir": "dist"
     },
-    "include": ["index.ts"],
-    "exclude": ["node_modules", "dist"]
+    "include": ["**/*.ts", "**/*.tsx"],
+    "exclude": ["node_modules", "dist", "demo"]
 }
