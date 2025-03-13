@@ -1,6 +1,6 @@
 {
     "name": "bun-mock-prisma",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "A Bun extension to simplify Prisma mocking",
     "module": "dist/index.js",
     "main": "dist/index.js",

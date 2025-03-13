@@ -10,11 +10,11 @@ bun add -d bun-mock-prisma
 
 ## Features
 
--   Fully type-safe mocking of Prisma Client
--   Support for nested models and methods
--   Support for transactions
--   Simple reset mechanism for test isolation
--   No dependencies apart from Bun and TypeScript
+-   🔒 Fully type-safe mocking of Prisma Client
+-   🔄 Support for nested models and methods
+-   💼 Support for transactions
+-   🧹 Simple reset mechanism for test isolation
+-   🚀 No dependencies apart from Bun and TypeScript
 
 ## Usage
 
