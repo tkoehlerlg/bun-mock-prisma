@@ -1,6 +1,6 @@
 {
     "name": "bun-mock-prisma",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "A simple and type-safe mocking utility for Prisma Client in Bun tests",
     "main": "dist/index.js",
     "module": "dist/index.js",
@@ -24,16 +24,16 @@
         "test",
         "typescript"
     ],
-    "author": "",
+    "author": "Torben Köhler",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/your-username/bun-mock-prisma.git"
+        "url": "git+https://github.com/tkoehlerlg/bun-mock-prisma.git"
     },
     "bugs": {
-        "url": "https://github.com/your-username/bun-mock-prisma/issues"
+        "url": "https://github.com/tkoehlerlg/bun-mock-prisma/issues"
     },
-    "homepage": "https://github.com/your-username/bun-mock-prisma#readme",
+    "homepage": "https://github.com/tkoehlerlg/bun-mock-prisma#readme",
     "engines": {
         "bun": ">=1.0.0"
     },
@@ -41,7 +41,9 @@
         "bun-types": ">=1.0.0"
     },
     "devDependencies": {
-        "bun-types": "latest"
+        "bun-types": "latest",
+        "prettier": "^3.5.3",
+        "typescript": "^5.8"
     },
     "trustedDependencies": [
         "bun"
